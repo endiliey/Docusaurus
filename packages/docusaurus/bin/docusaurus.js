@@ -41,16 +41,8 @@ program
 program
   .command('build [siteDir]')
   .description('Build website')
-  .option(
-    '-sic, --skip-image-compression <skipImageCompression>',
-    'Skip compression of image assets (default: false)',
-  )
-  .option('--skip-next-release', 'Skip documents from next release')
-  .action((siteDir = '.', {skipImageCompression, skipNextRelease}) => {
-    wrapCommand(build)(path.resolve(siteDir), {
-      skipImageCompression,
-      skipNextRelease,
-    });
+  .action((siteDir = '.') => {
+    wrapCommand(build)(path.resolve(siteDir));
   });
 
 program
