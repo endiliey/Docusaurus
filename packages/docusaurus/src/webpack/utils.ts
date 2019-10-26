@@ -83,6 +83,7 @@ export function getCacheLoader(
 }
 
 export function getBabelLoader(isServer: boolean, babelOptions?: {}): Loader {
+  const isProd = process.env.NODE_ENV === 'production';
   return {
     loader: require.resolve('babel-loader'),
     options: Object.assign(
@@ -115,6 +116,7 @@ export function getBabelLoader(isServer: boolean, babelOptions?: {}): Loader {
         ],
         plugins: [
           isServer ? 'dynamic-import-node' : '@babel/syntax-dynamic-import',
+          [require.resolve('./babel/registry.js'), {onlyChunkName: !isProd}],
         ],
       },
       babelOptions,
