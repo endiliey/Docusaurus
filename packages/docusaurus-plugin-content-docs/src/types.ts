@@ -142,7 +142,9 @@ export interface LoadedContent {
 export type DocsBaseMetadata = Pick<
   LoadedContent,
   'docsSidebars' | 'permalinkToSidebar'
->;
+> & {
+  version?: string;
+};
 
 export type VersioningEnv = {
   enabled: boolean;
