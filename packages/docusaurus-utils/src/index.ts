@@ -108,6 +108,7 @@ export function posixPath(str: string): string {
 }
 
 const chunkNameCache = new Map();
+const chunkNameSet = new Set();
 /**
  * Generate unique chunk name given a module path
  */
@@ -119,11 +120,17 @@ export function genChunkName(
 ): string {
   let chunkName: string | undefined = chunkNameCache.get(modulePath);
   if (!chunkName) {
+    // In production, we hash the modulePath, take the first four 4 chars as its chunkname.
+    // If it clashes with other, we use 8 chars.
     if (shortId) {
-      chunkName = createHash('md5')
+      const md5Hash = createHash('md5')
         .update(modulePath)
-        .digest('hex')
-        .substr(0, 8);
+        .digest('hex');
+      chunkName = md5Hash.substr(0, 4);
+      if (chunkNameSet.has(chunkName)) {
+        chunkName = md5Hash.substr(0, 8);
+      }
+      chunkNameSet.add(chunkName);
     } else {
       let str = modulePath;
       if (preferredName) {
