@@ -11,11 +11,11 @@ import {StaticRouter} from 'react-router-dom';
 import ReactDOMServer from 'react-dom/server';
 import {Helmet} from 'react-helmet';
 import {getBundles} from 'react-loadable-ssr-addon';
-import Loadable from 'react-loadable';
 
 import path from 'path';
 import fs from 'fs-extra';
 import routes from '@generated/routes';
+import {LoadableContext} from './loadable-context';
 import preload from './preload';
 import App from './App';
 import ssrTemplate from './templates/ssr.html.template';
@@ -28,11 +28,11 @@ export default async function render(locals) {
   const modules = new Set();
   const context = {};
   const appHtml = ReactDOMServer.renderToString(
-    <Loadable.Capture report={moduleName => modules.add(moduleName)}>
+    <LoadableContext.Provider value={moduleName => modules.add(moduleName)}>
       <StaticRouter location={location} context={context}>
         <App />
       </StaticRouter>
-    </Loadable.Capture>,
+    </LoadableContext.Provider>,
   );
 
   const helmet = Helmet.renderStatic();

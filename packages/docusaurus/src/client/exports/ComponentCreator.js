@@ -6,10 +6,10 @@
  */
 
 import React from 'react';
-import Loadable from 'react-loadable';
 import Loading from '@theme/Loading';
 import routesChunkNames from '@generated/routesChunkNames';
 import registry from '@generated/registry';
+import Loadable from '../loadable';
 
 function ComponentCreator(path) {
   // 404 page
